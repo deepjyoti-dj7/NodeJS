@@ -1,4 +1,5 @@
 const fs = require("fs");
+const noteEvents = require("./events");
 const command = process.argv[2];
 const input = process.argv[3];
 const NOTES_FILE = "notes.json";
@@ -30,6 +31,8 @@ if (command === "add") {
   notes.push(newNote);
   writeNotes(notes);
   console.log("Note added:", newNote);
+
+  noteEvents.emit("note-added", newNote);
 
   // List notes
 } else if (command === "list") {
@@ -66,6 +69,8 @@ if (command === "add") {
     writeNotes(filteredNotes);
     console.log(`Note with ID ${idToDelete} deleted.`);
   }
+
+  noteEvents.emit("note-deleted", idToDelete);
 
   // Unknown command
 } else {
